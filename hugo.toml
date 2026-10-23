@@ -42,13 +42,13 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
 # "label" (optional) replaces the status text on the card.
 [[params.repos]]
   name   = "gateway"
-  status = "active"
-  label  = "in development"
+  status = "ready"
+  label  = "v0.1.0"
   url    = "https://github.com/go-llmflow/gateway"
-  blurb  = "An OpenAI-compatible gateway in pure Go in front of vLLM: virtual keys, teams, budgets and rate limits, GPU-hour accounting, and fair-share with borrowing. **In development: v0.1.0 is not released yet.**"
+  blurb  = "An OpenAI-compatible gateway in pure Go in front of vLLM: virtual keys, teams, budgets and rate limits in PostgreSQL, GPU-hour accounting, and fair-share with borrowing. **Released as v0.1.0:** `go install github.com/go-llmflow/gateway/cmd/llmflow-gateway@latest`."
 [[params.repos]]
   name   = "docs"
   status = "active"
   label  = "on main"
   url    = "https://go-llmflow.github.io/docs/"
-  blurb  = "The documentation (Hugo + Hextra): the gateway's status and architecture, how fair-share with borrowing works, and a guide to sharing a co-owned GPU cluster between two institutions with Slurm, vLLM and a gateway."
+  blurb  = "The documentation (Hugo + Hextra): the gateway's configuration, admin API, limitations and roadmap, how fair-share with borrowing works, and a guide to sharing a co-owned GPU cluster between two institutions with Slurm, vLLM and a gateway."
