@@ -8,9 +8,8 @@ module pinned in `go.mod`.
 The brand colours are read from `static/img/logo.svg`
 (`go run github.com/go-fleettools/landingkit/cmd/landingkit brand static/img/logo.svg`).
 The repositories on the page are listed in `hugo.toml`; the `ci` workflow fails if
-one is missing. The gateway is shown as **in development, v0.1.0 not yet
-released**: change that line, the tags in `hugo.toml` and the documentation
-together when it is released.
+one is missing. The gateway is shown as **v0.1.0, released**: change that line, the
+tags in `hugo.toml` and the documentation together at the next release.
 
 ```sh
 hugo server
