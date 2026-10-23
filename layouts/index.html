@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ .Site.Title }} — LLM inference and serving in Go</title>
+<meta name="description" content="go-llmflow — high-performance LLM inference and serving in Go. The gateway: an OpenAI-compatible gateway in front of vLLM with virtual keys, teams, budgets, rate limits and fair-share scheduling with borrowing. In development; v0.1.0 is not released yet.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+{{/* ⛔ This meta is what the deploy VERIFIES: it fetches the live URL and
+     fails unless the generator is Hugo, so a Pages source left on a branch
+     (Jekyll rendering README.md) cannot pass for this site. Removing this line
+     breaks the deploy rather than the page. */}}
+{{ hugo.Generator }}
+{{ partial "styles.html" . }}
+</head>
+<body class="lm">
+  <header class="nav"><div class="wrap">
+    <a class="brand" href="/"><img class="glyph" src="/img/logo.svg" width="32" height="32" alt="go-llmflow logo"> go-llmflow</a>
+    <nav><a href="#gateway">Gateway</a><a href="#fairshare">Fair-share</a><a href="#security">Security</a><a href="#repos">Repositories</a><a href="https://go-llmflow.github.io/docs/">Docs</a></nav>
+    {{ partial "theme-toggle.html" . }}
+  </div></header>
+  {{ partial "fork-ribbon.html" "https://github.com/go-llmflow/gateway" }}
+
+  <div class="hero"><div class="wrap">
+    <div>
+      <h1 class="head">LLM serving for a shared GPU cluster,<br><span class="accent">in pure Go.</span></h1>
+      <p class="sub">go-llmflow is high-performance LLM inference and serving in Go. Its first project, <code>gateway</code>, is an <b>OpenAI-compatible gateway</b> in front of <a href="https://docs.vllm.ai">vLLM</a> for clusters that several institutions own together: each team gets its share, and the share a team leaves idle is lent to the others. <code>CGO_ENABLED=0</code>, BSD-3-Clause.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://go-llmflow.github.io/docs/">{{ partial "icons/book.html" . }}Read the documentation →</a>
+      </div>
+      {{/* ⛔ Status, said where it is read. gateway has no release yet. This
+           line and the "active" tags in hugo.toml change together. */}}
+      <div class="trust"><span><b>gateway</b> — in development, v0.1.0 not yet released</span><span><b>fair-share</b> with borrowing, mapped to vLLM priorities</span><span><b>OpenAI</b> API, streaming included</span></div>
+    </div>
+    <div class="term">
+      <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="t">terminal</span></div>
+<pre><span class="c-com"># install, then check a configuration</span>
+$ go install github.com/go-llmflow/gateway/cmd/llmflow-gateway@latest
+$ llmflow-gateway check-config --config gateway.yaml
+
+<span class="c-com"># what vLLM is told for each request</span>
+<span class="c-key">within the team's share</span>   priority <span class="c-str">0</span> (interactive) / <span class="c-str">1</span> (batch)
+<span class="c-key">borrowing idle capacity</span>   priority <span class="c-str">10</span>+ (interactive) / <span class="c-str">11</span>+ (batch)
+<span class="c-key">sent by the client</span>        <span class="c-str">always stripped</span></pre>
+    </div>
+  </div></div>
+
+  <div class="strip"><div class="wrap">
+    <span class="lead-line">One organisation, <b>{{ len .Site.Params.repos }}</b> repositories</span>
+    <div class="mods">{{ range .Site.Params.repos }}<a href="#repos">{{ .name }}</a>{{ end }}</div>
+  </div></div>
+
+  <section id="gateway"><div class="wrap">
+    <span class="eyebrow">The gateway</span>
+    <h2>One OpenAI endpoint, <i>many</i> owners.</h2>
+    <p class="lead">The gateway sits between your users' OpenAI clients and the vLLM instances of a cluster. It is in development: v0.1.0 is not released yet, and the pieces below are at different stages. The <a href="https://github.com/go-llmflow/gateway">repository</a> and the <a href="https://go-llmflow.github.io/docs/">documentation</a> say which is which.</p>
+    <div class="grid">
+      <div class="card"><div class="ico">🔑</div><h3>Virtual keys and teams</h3><p>A key per user, attached to the team of its institution, so that every request is charged to the right share. The store for teams, hashed keys, budgets and usage (in memory or in PostgreSQL) is the pull request now open.</p></div>
+      <div class="card"><div class="ico">💳</div><h3>Budgets and rate limits</h3><p>A budget and rate limits per team, kept in PostgreSQL so that they survive a restart and are the same on every instance. Designed, not shipped.</p></div>
+      <div class="card"><div class="ico">🔌</div><h3>OpenAI-compatible</h3><p>The request is rewritten on the way in, the response, a server-sent-events stream included, is passed through event by event, and token usage is captured for accounting. The parsers are fuzzed.</p></div>
+      <div class="card"><div class="ico">⚙️</div><h3>GPU-hour accounting</h3><p>Usage is counted per team so that inference and batch jobs can be read in the same unit, GPU-hours, as the guide in the documentation explains.</p></div>
+    </div>
+  </div></section>
+
+  <section id="fairshare"><div class="wrap">
+    <span class="eyebrow">Fair-share</span>
+    <h2>A guaranteed share, <i>and</i> the idle rest.</h2>
+    <p class="lead">Static quotas leave the share of an absent team unused. The gateway reserves each team its share of a pool, and lets the others borrow what is idle. It does so with the one knob vLLM has: the priority of a request.</p>
+    <div class="grid">
+      <div class="card"><div class="ico">🎯</div><h3>Within the share</h3><p>While a team has fewer requests running than its reservation (its share times the pool's capacity), the request gets vLLM priority <b>0</b> (interactive) or <b>1</b> (batch).</p></div>
+      <div class="card"><div class="ico">🤝</div><h3>Borrowing</h3><p>Above the reservation the request borrows, at priority <b>10</b> (interactive) or <b>11</b> (batch) and above, the teams that consumed least first (the ranking is Slurm Fair Tree's level fairshare). vLLM admits within-share requests first and preempts borrowers first when KV-cache memory runs out.</p></div>
+      <div class="card"><div class="ico">🧪</div><h3>Simulated</h3><p>A deterministic simulator of vLLM's v1 priority scheduler checks the policy: with both teams saturating, the running fraction follows the shares (0.79 and 0.21 against 0.8125 and 0.1875), and a control with every request at priority 0 does not.</p></div>
+    </div>
+    <div class="cta"><a class="btn btn-primary" href="https://go-llmflow.github.io/docs/">Read the guide for a co-owned GPU cluster →</a></div>
+  </div></section>
+
+  <section id="security"><div class="wrap">
+    <span class="eyebrow">Security</span>
+    <h2>The client never sets its own <i>priority</i>.</h2>
+    <p class="lead">A priority a client can choose is a priority every client chooses. The gateway removes <code>priority</code>, <code>extra_body</code>, <code>request_id</code>, <code>kv_transfer_params</code>, <code>ec_transfer_params</code> and <code>vllm_xargs</code> from the request before it reaches vLLM, and decides the priority itself.</p>
+    <div class="grid">
+      <div class="card"><div class="ico">🧹</div><h3>Re-encoded, not patched</h3><p>The body is re-encoded from its parsed form, so duplicate keys and escaped spellings of a field name cannot reach vLLM. A fuzz target checks that no stripped field survives.</p></div>
+      <div class="card"><div class="ico">📄</div><h3>Strict configuration</h3><p>Unknown keys are rejected, upstream URLs are limited to http and https without credentials, and secrets are read from files only, never from the command line.</p></div>
+    </div>
+  </div></section>
+
+  <section id="repos"><div class="wrap">
+    <span class="eyebrow">The organisation</span>
+    <h2>Repositories</h2>
+    <div class="grid">
+      {{ range .Site.Params.repos }}
+      <article class="card">
+        <h3><a href="{{ .url }}">{{ .name }}</a> <span class="tag {{ .status }}">{{ if .label }}{{ .label }}{{ else if eq .status "active" }}on main, not released{{ else }}{{ .status }}{{ end }}</span></h3>
+        <p>{{ .blurb | markdownify }}</p>
+      </article>
+      {{ end }}
+    </div>
+  </div></section>
+
+  <section id="eco" style="padding-top:6px"><div class="wrap">
+    <div class="band">
+      <h2>Follow the work.</h2>
+      <p>The gateway is built in the open, one pull request at a time, with the documentation and this page updated alongside it.</p>
+      <a class="btn btn-ghost" href="https://github.com/go-llmflow">{{ partial "icons/github.html" . }}The organisation on GitHub →</a>
+    </div>
+  </div></section>
+
+  <footer><div class="wrap"><span>© the go-llmflow authors · BSD-3-Clause</span><span>Pure Go · CGO_ENABLED=0</span></div></footer>
+</body>
+</html>
