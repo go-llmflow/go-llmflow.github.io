@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ .Site.Title }} — LLM inference and serving in Go</title>
-<meta name="description" content="go-llmflow — high-performance LLM inference and serving in Go. The gateway v0.1.0: an OpenAI-compatible gateway in front of vLLM with virtual keys, teams, budgets, rate limits and fair-share scheduling with borrowing.">
+<meta name="description" content="go-llmflow — high-performance LLM inference and serving in Go. The gateway v0.3.0: an OpenAI-compatible gateway in front of vLLM with virtual keys, teams, budgets, rate limits and fair-share scheduling with borrowing.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 {{/* ⛔ This meta is what the deploy VERIFIES: it fetches the live URL and
      fails unless the generator is Hugo, so a Pages source left on a branch
@@ -28,9 +28,9 @@
       <div class="cta">
         <a class="btn btn-primary" href="https://go-llmflow.github.io/docs/">{{ partial "icons/book.html" . }}Read the documentation →</a>
       </div>
-      {{/* ⛔ Status, said where it is read. gateway v0.1.0 is released. This
-           line and the tags in hugo.toml change together. */}}
-      <div class="trust"><span><b>gateway v0.1.0</b> — released</span><span><b>fair-share</b> with borrowing, mapped to vLLM priorities</span><span><b>OpenAI</b> API, streaming included</span></div>
+      {{/* ⛔ Status, said where it is read. gateway v0.3.0 is the current release.
+           This line and the tags in hugo.toml change together. */}}
+      <div class="trust"><span><b>gateway v0.3.0</b> — current release</span><span><b>fair-share</b> with borrowing, mapped to vLLM priorities</span><span><b>OpenAI</b> API, streaming included</span></div>
     </div>
     <div class="term">
       <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="t">terminal</span></div>
@@ -54,12 +54,12 @@ $ llmflow-gateway serve -c gateway.hcl
   <section id="gateway"><div class="wrap">
     <span class="eyebrow">The gateway</span>
     <h2>One OpenAI endpoint, <i>many</i> owners.</h2>
-    <p class="lead">The gateway sits between your users' OpenAI clients and the vLLM instances of a cluster. v0.1.0 is released: <code>llmflow-gateway</code> has <code>serve</code>, <code>export</code>, <code>check-config</code> and <code>version</code>, and is configured in HCL2 with diagnostics down to file, line and column. Its open limitations (one replica per pool, no TLS) and its roadmap are in the <a href="https://go-llmflow.github.io/docs/">documentation</a>.</p>
+    <p class="lead">The gateway sits between your users' OpenAI clients and the vLLM instances of a cluster. v0.3.0 is the current release: <code>llmflow-gateway</code> has <code>serve</code>, <code>export</code>, <code>check-config</code> and <code>version</code>, and is configured in HCL2 with diagnostics down to file, line and column. Its open limitations (one replica per pool, no TLS) and its roadmap (governance is done; identity, audit and guardrails come next) are in the <a href="https://go-llmflow.github.io/docs/">documentation</a>.</p>
     <div class="grid">
-      <div class="card"><div class="ico">🔑</div><h3>Virtual keys and teams</h3><p>A key per user, attached to the team of its institution, so that every request is charged to the right share. Keys are stored hashed, teams, budgets and usage live in PostgreSQL (or in memory), and an admin API manages them.</p></div>
-      <div class="card"><div class="ico">💳</div><h3>Budgets and rate limits</h3><p>Budgets in GPU-hours per day, week or month, and per-key limits on requests, tokens and requests in flight. Budgets fail closed when the store cannot be read.</p></div>
+      <div class="card"><div class="ico">🔑</div><h3>Organisations, teams, keys</h3><p>The tree of a Slurm account: organisation (institution), team (lab), project, key. Every request is charged to the right share. Keys are stored hashed; roles (proxy, organisation and team admins, members, viewers) delegate the administration through an admin API.</p></div>
+      <div class="card"><div class="ico">💳</div><h3>Budgets and rate limits</h3><p>Budgets in GPU-hours per day, week or month on every scope, with soft-limit alerts and temporary increases, and per-key limits on requests, tokens and requests in flight. Budgets fail closed when the store cannot be read.</p></div>
       <div class="card"><div class="ico">🔌</div><h3>OpenAI-compatible</h3><p>The request is rewritten on the way in, the response, a server-sent-events stream included, is passed through event by event, and token usage is captured for accounting. The parsers are fuzzed.</p></div>
-      <div class="card"><div class="ico">⚙️</div><h3>GPU-hour accounting</h3><p>Usage is counted per team in GPU-hours, the unit of Slurm's <code>sreport</code>, and exported as CSV to reconcile inference with batch. The gateway adds about 55 µs at p50 over a direct call (single core; <a href="https://go-llmflow.github.io/docs/">method and caveats</a>).</p></div>
+      <div class="card"><div class="ico">⚙️</div><h3>GPU-hour accounting</h3><p>Usage is counted per team in GPU-hours, the unit of Slurm's <code>sreport</code>, and exported as CSV to reconcile inference with batch. Preliminary figures, measured by the maintainers on a loaded machine: about 54 µs added at p50 over a direct call (single core). An independent comparison with LiteLLM on an idle machine is pending (<a href="https://go-llmflow.github.io/docs/">method and caveats</a>).</p></div>
     </div>
   </div></section>
 
@@ -68,7 +68,7 @@ $ llmflow-gateway serve -c gateway.hcl
     <h2>A guaranteed share, <i>and</i> the idle rest.</h2>
     <p class="lead">Static quotas leave the share of an absent team unused. The gateway reserves each team its share of a pool, and lets the others borrow what is idle. It does so with the one knob vLLM has: the priority of a request.</p>
     <div class="grid">
-      <div class="card"><div class="ico">🎯</div><h3>Within the share</h3><p>While a team has fewer requests running than its reservation (its share times the pool's capacity), the request gets vLLM priority <b>0</b> (interactive) or <b>1</b> (batch).</p></div>
+      <div class="card"><div class="ico">🎯</div><h3>Within the share</h3><p>While an organisation has fewer requests running than its reservation (its share times the pool's capacity), the request gets vLLM priority <b>0</b> (interactive) or <b>1</b> (batch).</p></div>
       <div class="card"><div class="ico">🤝</div><h3>Borrowing</h3><p>Above the reservation the request borrows, at priority <b>10</b> (interactive) or <b>11</b> (batch) and above, the teams that consumed least first (the ranking is Slurm Fair Tree's level fairshare). vLLM admits within-share requests first and preempts borrowers first when KV-cache memory runs out.</p></div>
       <div class="card"><div class="ico">🧪</div><h3>Simulated</h3><p>A deterministic simulator of vLLM's v1 priority scheduler checks the policy: with both teams saturating, the running fraction follows the shares (0.79 and 0.21 against 0.8125 and 0.1875), and a control with every request at priority 0 does not.</p></div>
     </div>
@@ -81,6 +81,7 @@ $ llmflow-gateway serve -c gateway.hcl
     <p class="lead">A priority a client can choose is a priority every client chooses. The gateway removes <code>priority</code>, <code>extra_body</code>, <code>request_id</code>, <code>kv_transfer_params</code>, <code>ec_transfer_params</code> and <code>vllm_xargs</code> from the request before it reaches vLLM, and decides the priority itself.</p>
     <div class="grid">
       <div class="card"><div class="ico">🧹</div><h3>Re-encoded, not patched</h3><p>The body is re-encoded from its parsed form, so duplicate keys and escaped spellings of a field name cannot reach vLLM. A fuzz target checks that no stripped field survives.</p></div>
+      <div class="card"><div class="ico">🧊</div><h3>No shared prefix cache</h3><p>vLLM's prefix-cache reuse is a timing side channel between tenants (CVE-2025-46570). The gateway sets a stable per-tenant <code>cache_salt</code>, by organisation by default, and drops the client's. Users within one scope can still probe each other, and a salt is not a hard boundary: <a href="https://go-llmflow.github.io/docs/">the documentation</a> says what remains.</p></div>
       <div class="card"><div class="ico">📄</div><h3>Strict configuration</h3><p>Unknown keys are rejected, upstream URLs are limited to http and https without credentials, and secrets are read from files only, never from the command line.</p></div>
     </div>
   </div></section>
