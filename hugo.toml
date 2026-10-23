@@ -43,12 +43,12 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
 [[params.repos]]
   name   = "gateway"
   status = "ready"
-  label  = "v0.3.0"
+  label  = "v0.4.0"
   url    = "https://github.com/go-llmflow/gateway"
-  blurb  = "An OpenAI-compatible gateway in pure Go in front of vLLM: an organisation, team, project and key hierarchy with roles, budgets and rate limits in PostgreSQL, GPU-hour accounting, fair-share with borrowing, and per-tenant prefix-cache isolation. **Current release v0.3.0:** `go install github.com/go-llmflow/gateway/cmd/llmflow-gateway@latest`."
+  blurb  = "An OpenAI-compatible gateway in pure Go in front of vLLM: an organisation, team, project and key hierarchy with roles, budgets and rate limits in PostgreSQL, GPU-hour accounting, fair-share with borrowing, per-tenant prefix-cache isolation, and identity (OpenID Connect, single sign-on, SCIM). **Current release v0.4.0:** `go install github.com/go-llmflow/gateway/cmd/llmflow-gateway@latest`."
 [[params.repos]]
   name   = "docs"
   status = "active"
   label  = "on main"
   url    = "https://go-llmflow.github.io/docs/"
-  blurb  = "The documentation (Hugo + Hextra): the gateway's configuration, roles, admin API, prefix-cache isolation, limitations and roadmap, how fair-share with borrowing works, and a guide to sharing a co-owned GPU cluster between two institutions with Slurm, vLLM and a gateway."
+  blurb  = "The documentation (Hugo + Hextra): the gateway's configuration, roles, identity, admin API, prefix-cache isolation, limitations and roadmap, how fair-share with borrowing works, and a guide to sharing a co-owned GPU cluster between two institutions with Slurm, vLLM and a gateway."
