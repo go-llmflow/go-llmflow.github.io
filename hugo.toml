@@ -43,9 +43,9 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
 [[params.repos]]
   name   = "gateway"
   status = "ready"
-  label  = "v0.9.0"
+  label  = "v0.10.0"
   url    = "https://github.com/go-llmflow/gateway"
-  blurb  = "An OpenAI-compatible gateway in pure Go in front of vLLM: an organisation, team, project and key hierarchy with roles, budgets and rate limits in PostgreSQL, GPU-hour accounting, fair-share with borrowing, per-tenant prefix-cache isolation, and identity (OpenID Connect, single sign-on, SCIM), a hash-chained audit log, and guardrails on prompts and completions (`hide_secrets`, `pii`, Llama Guard, Prompt Guard; the HTTP adapter is off by default), and the endpoints coding agents use (stateless `/v1/responses`, the Anthropic `/v1/messages`), model fallbacks, OpenTelemetry traces, a server-rendered admin web UI and an MCP gateway with per-team tool allow-lists. **Current release v0.9.0 (the security audit and chaos release):** `go install github.com/go-llmflow/gateway/cmd/llmflow-gateway@latest`."
+  blurb  = "An OpenAI-compatible gateway in pure Go in front of vLLM: an organisation, team, project and key hierarchy with roles, budgets and rate limits in PostgreSQL, GPU-hour accounting, fair-share with borrowing, per-tenant prefix-cache isolation, and identity (OpenID Connect, single sign-on, SCIM), a hash-chained audit log, and guardrails on prompts and completions (`hide_secrets`, `pii`, Llama Guard, Prompt Guard; the HTTP adapter is off by default), and the endpoints coding agents use (stateless `/v1/responses`, the Anthropic `/v1/messages`), model fallbacks, OpenTelemetry traces, a server-rendered admin web UI and an MCP gateway with per-team tool allow-lists. durable accounting that survives a PostgreSQL outage. **Current release v0.10.0 (breaking: `store.spool_dir` is mandatory with the postgres store):** `go install github.com/go-llmflow/gateway/cmd/llmflow-gateway@latest`."
 [[params.repos]]
   name   = "pii"
   status = "ready"
