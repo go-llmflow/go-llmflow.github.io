@@ -55,9 +55,9 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
 [[params.repos]]
   name   = "bench"
   status = "ready"
-  label  = "v0.1.0"
+  label  = "v0.2.0"
   url    = "https://github.com/go-llmflow/bench"
-  blurb  = "Measuring tools for LLM gateways, in pure Go. `gwbench` runs an interleaved A/B of gateways placed in front of one upstream and reports the latency each gateway **adds**, paired round by round against a direct call, with a load gate that refuses to measure on a busy machine and a planted-delay control; keys are read from files only. `fakevllm` is a recording fake vLLM (OpenAI chat completions and Anthropic Messages, JSON or SSE). **Current release v0.1.0:** `go install github.com/go-llmflow/bench/cmd/gwbench@latest`."
+  blurb  = "Measuring tools for LLM gateways, in pure Go. `gwbench` runs an interleaved A/B of gateways placed in front of one upstream and reports the latency each gateway **adds**, paired round by round against a direct call, with a load gate that refuses to measure on a busy machine and a planted-delay control; keys are read from files only. `fakevllm` is a recording fake vLLM (OpenAI chat completions and Anthropic Messages, JSON or SSE). An `e2e` suite checks the gateway against a real vLLM: priorities, preemption, prefix-cache isolation and accounting. **Current release v0.2.0:** `go install github.com/go-llmflow/bench/cmd/gwbench@latest`."
 [[params.repos]]
   name   = "docs"
   status = "active"
