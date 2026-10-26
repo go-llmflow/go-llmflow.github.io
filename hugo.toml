@@ -43,15 +43,15 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
 [[params.repos]]
   name   = "gateway"
   status = "ready"
-  label  = "v0.8.0"
+  label  = "v0.9.0"
   url    = "https://github.com/go-llmflow/gateway"
-  blurb  = "An OpenAI-compatible gateway in pure Go in front of vLLM: an organisation, team, project and key hierarchy with roles, budgets and rate limits in PostgreSQL, GPU-hour accounting, fair-share with borrowing, per-tenant prefix-cache isolation, and identity (OpenID Connect, single sign-on, SCIM), a hash-chained audit log, and guardrails on prompts and completions (`hide_secrets`, `pii`, Llama Guard, Prompt Guard; the HTTP adapter is off by default), and the endpoints coding agents use (stateless `/v1/responses`, the Anthropic `/v1/messages`), model fallbacks, OpenTelemetry traces, a server-rendered admin web UI and an MCP gateway with per-team tool allow-lists. **Current release v0.8.0:** `go install github.com/go-llmflow/gateway/cmd/llmflow-gateway@latest`."
+  blurb  = "An OpenAI-compatible gateway in pure Go in front of vLLM: an organisation, team, project and key hierarchy with roles, budgets and rate limits in PostgreSQL, GPU-hour accounting, fair-share with borrowing, per-tenant prefix-cache isolation, and identity (OpenID Connect, single sign-on, SCIM), a hash-chained audit log, and guardrails on prompts and completions (`hide_secrets`, `pii`, Llama Guard, Prompt Guard; the HTTP adapter is off by default), and the endpoints coding agents use (stateless `/v1/responses`, the Anthropic `/v1/messages`), model fallbacks, OpenTelemetry traces, a server-rendered admin web UI and an MCP gateway with per-team tool allow-lists. **Current release v0.9.0 (the security audit and chaos release):** `go install github.com/go-llmflow/gateway/cmd/llmflow-gateway@latest`."
 [[params.repos]]
   name   = "pii"
   status = "ready"
-  label  = "v0.1.0"
+  label  = "v0.2.0"
   url    = "https://github.com/go-llmflow/pii"
-  blurb  = "Finds personal data in text, in pure Go with no dependencies (standard library only, `CGO_ENABLED=0`): e-mail, phone (E.164 and the French plan), IBAN (ISO 13616, mod 97), French NIR (INSEE key, 2A/2B), payment cards (Luhn and network prefix), IPv4 and IPv6. `pii.New(kinds...)`, `Scanner.Find(text)` returns `[]Match{Kind, Start, End}` and `pii.Mask` replaces them. On a benign corpus: 0 false positives for every kind except 1 phone. Used by the gateway's PII guardrail. **Current release v0.1.0:** `go get github.com/go-llmflow/pii@v0.1.0`."
+  blurb  = "Finds personal data in text, in pure Go with no dependencies (standard library only, `CGO_ENABLED=0`): e-mail, phone (E.164 and the French plan), IBAN (ISO 13616, mod 97), French NIR (INSEE key, 2A/2B), payment cards (Luhn and network prefix), IPv4 and IPv6. `pii.New(kinds...)`, `Scanner.Find(text)` returns `[]Match{Kind, Start, End}` and `pii.Mask` replaces them. On a benign corpus: 0 false positives for every kind except 1 phone. Used by the gateway's PII guardrail. v0.1.0 was quadratic on long runs of digits (1 MiB took 11 min 56 s, measured 2026-10-26 on a loaded machine); v0.2.0 fixes it and compares pii with Presidio. **Current release v0.2.0:** `go get github.com/go-llmflow/pii@v0.2.0`."
 [[params.repos]]
   name   = "bench"
   status = "ready"
