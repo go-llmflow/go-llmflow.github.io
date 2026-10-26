@@ -43,9 +43,9 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
 [[params.repos]]
   name   = "gateway"
   status = "ready"
-  label  = "v0.10.0"
+  label  = "v0.11.0"
   url    = "https://github.com/go-llmflow/gateway"
-  blurb  = "An OpenAI-compatible gateway in pure Go in front of vLLM: an organisation, team, project and key hierarchy with roles, budgets and rate limits in PostgreSQL, GPU-hour accounting, fair-share with borrowing, per-tenant prefix-cache isolation, and identity (OpenID Connect, single sign-on, SCIM), a hash-chained audit log, and guardrails on prompts and completions (`hide_secrets`, `pii`, Llama Guard, Prompt Guard; the HTTP adapter is off by default), and the endpoints coding agents use (stateless `/v1/responses`, the Anthropic `/v1/messages`), model fallbacks, OpenTelemetry traces, a server-rendered admin web UI and an MCP gateway with per-team tool allow-lists. durable accounting that survives a PostgreSQL outage. **Current release v0.10.0 (breaking: `store.spool_dir` is mandatory with the postgres store):** `go install github.com/go-llmflow/gateway/cmd/llmflow-gateway@latest`."
+  blurb  = "An OpenAI-compatible gateway in pure Go in front of vLLM: an organisation, team, project and key hierarchy with roles, budgets and rate limits in PostgreSQL, GPU-hour accounting, fair-share with borrowing, per-tenant prefix-cache isolation, and identity (OpenID Connect, single sign-on, SCIM), a hash-chained audit log, and guardrails on prompts and completions (`hide_secrets`, `pii`, Llama Guard, Prompt Guard; the HTTP adapter is off by default), and the endpoints coding agents use (stateless `/v1/responses`, the Anthropic `/v1/messages`), model fallbacks, OpenTelemetry traces, a server-rendered admin web UI and an MCP gateway with per-team tool allow-lists. durable accounting that survives a PostgreSQL outage. fallback to a spare model group when a pool is saturated or down. **Current release v0.11.0:** `go install github.com/go-llmflow/gateway/cmd/llmflow-gateway@latest`."
 [[params.repos]]
   name   = "pii"
   status = "ready"
@@ -55,9 +55,9 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
 [[params.repos]]
   name   = "bench"
   status = "ready"
-  label  = "v0.3.0"
+  label  = "v0.3.2"
   url    = "https://github.com/go-llmflow/bench"
-  blurb  = "Measuring tools for LLM gateways, in pure Go. `gwbench` runs an interleaved A/B of gateways placed in front of one upstream and reports the latency each gateway **adds**, paired round by round against a direct call, with a load gate that refuses to measure on a busy machine and a planted-delay control; keys are read from files only. `fakevllm` is a recording fake vLLM (OpenAI chat completions and Anthropic Messages, JSON or SSE). An `e2e` suite checks the gateway against a real vLLM: priorities, preemption, prefix-cache isolation and accounting, and an OIDC suite that runs the gateway's JWT, single sign-on and SCIM paths against two real identity providers (dex and go-authn/bridge). **Current release v0.3.0:** `go install github.com/go-llmflow/bench/cmd/gwbench@latest`."
+  blurb  = "Measuring tools for LLM gateways, in pure Go. `gwbench` runs an interleaved A/B of gateways placed in front of one upstream and reports the latency each gateway **adds**, paired round by round against a direct call, with a load gate that refuses to measure on a busy machine and a planted-delay control; keys are read from files only. `fakevllm` is a recording fake vLLM (OpenAI chat completions and Anthropic Messages, JSON or SSE). An `e2e` suite checks the gateway against a real vLLM: priorities, preemption, prefix-cache isolation and accounting, and an OIDC suite that runs the gateway's JWT, single sign-on and SCIM paths against two real identity providers (dex and go-authn/bridge). **Current release v0.3.2:** `go install github.com/go-llmflow/bench/cmd/gwbench@latest`."
 [[params.repos]]
   name   = "docs"
   status = "active"
