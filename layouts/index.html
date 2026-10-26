@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ .Site.Title }} — LLM inference and serving in Go</title>
-<meta name="description" content="go-llmflow — high-performance LLM inference and serving in Go. The gateway v0.8.0: an OpenAI-compatible gateway in front of vLLM with virtual keys, teams, budgets, rate limits and fair-share scheduling with borrowing.">
+<meta name="description" content="go-llmflow — high-performance LLM inference and serving in Go. The gateway v0.9.0: an OpenAI-compatible gateway in front of vLLM with virtual keys, teams, budgets, rate limits and fair-share scheduling with borrowing.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 {{/* ⛔ This meta is what the deploy VERIFIES: it fetches the live URL and
      fails unless the generator is Hugo, so a Pages source left on a branch
@@ -28,9 +28,9 @@
       <div class="cta">
         <a class="btn btn-primary" href="https://go-llmflow.github.io/docs/">{{ partial "icons/book.html" . }}Read the documentation →</a>
       </div>
-      {{/* ⛔ Status, said where it is read. gateway v0.8.0 is the current release.
+      {{/* ⛔ Status, said where it is read. gateway v0.9.0 is the current release.
            This line and the tags in hugo.toml change together. */}}
-      <div class="trust"><span><b>gateway v0.8.0</b> — current release</span><span><b>fair-share</b> with borrowing, mapped to vLLM priorities</span><span><b>OpenAI</b> API, streaming included</span></div>
+      <div class="trust"><span><b>gateway v0.9.0</b> — current release</span><span><b>fair-share</b> with borrowing, mapped to vLLM priorities</span><span><b>OpenAI</b> API, streaming included</span></div>
     </div>
     <div class="term">
       <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="t">terminal</span></div>
@@ -54,7 +54,7 @@ $ llmflow-gateway serve -c gateway.hcl
   <section id="gateway"><div class="wrap">
     <span class="eyebrow">The gateway</span>
     <h2>One OpenAI endpoint, <i>many</i> owners.</h2>
-    <p class="lead">The gateway sits between your users' OpenAI clients and the vLLM instances of a cluster. v0.8.0 is the current release: <code>llmflow-gateway</code> has <code>serve</code>, <code>export</code>, <code>check-config</code> and <code>version</code>, and is configured in HCL2 with diagnostics down to file, line and column. Its open limitations (one replica per pool, no TLS) and its roadmap (governance, identity, audit and logging, and guardrails are done) are in the <a href="https://go-llmflow.github.io/docs/">documentation</a>.</p>
+    <p class="lead">The gateway sits between your users' OpenAI clients and the vLLM instances of a cluster. v0.9.0 is the current release: <code>llmflow-gateway</code> has <code>serve</code>, <code>export</code>, <code>check-config</code> and <code>version</code>, and is configured in HCL2 with diagnostics down to file, line and column. Its open limitations (one replica per pool, no TLS) and its roadmap (governance, identity, audit and logging, and guardrails are done) are in the <a href="https://go-llmflow.github.io/docs/">documentation</a>.</p>
     <div class="grid">
       <div class="card"><div class="ico">🔑</div><h3>Organisations, teams, keys</h3><p>The tree of a Slurm account: organisation (institution), team (lab), project, key. Every request is charged to the right share. Keys are stored hashed; roles (proxy, organisation and team admins, members, viewers) delegate the administration through an admin API.</p></div>
       <div class="card"><div class="ico">🪪</div><h3>Your identity provider</h3><p>OpenID Connect access tokens on the inference API, single sign-on for administrators, SAML federations such as RENATER and eduGAIN through <a href="https://github.com/go-authn/bridge">authn-bridge</a>, and SCIM provisioning of users and groups, all on <a href="https://github.com/go-authn">go-authn</a>. Keys can be rotated on a schedule.</p></div>
@@ -87,7 +87,7 @@ $ llmflow-gateway serve -c gateway.hcl
     <div class="grid">
       <div class="card"><div class="ico">🧹</div><h3>Re-encoded, not patched</h3><p>The body is re-encoded from its parsed form, so duplicate keys and escaped spellings of a field name cannot reach vLLM. A fuzz target checks that no stripped field survives.</p></div>
       <div class="card"><div class="ico">🧊</div><h3>No shared prefix cache</h3><p>vLLM's prefix-cache reuse is a timing side channel between tenants (CVE-2025-46570). The gateway sets a stable per-tenant <code>cache_salt</code>, by organisation by default, and drops the client's. Users within one scope can still probe each other, and a salt is not a hard boundary: <a href="https://go-llmflow.github.io/docs/">the documentation</a> says what remains.</p></div>
-      <div class="card"><div class="ico">🛡️</div><h3>Audited, then fixed</h3><p>A security audit and chaos run of v0.8.0 on 2026-10-26 found a high, several medium and low issues, among them tenant uuids on rerank and embeddings, a client that never reads its answer, and a disabled administrator re-enabled by another organisation's admin. The fixes are merged, each with a test that fails without it, and are not in a release yet. <a href="https://go-llmflow.github.io/docs/">The documentation</a> lists them.</p></div>
+      <div class="card"><div class="ico">🛡️</div><h3>Audited, then fixed</h3><p>A security audit and chaos run of v0.8.0 on 2026-10-26 found nine issues (two high, four medium, three low), among them tenant uuids on rerank and embeddings, a client that never reads its answer, and a disabled administrator re-enabled by another organisation's admin. All are fixed in v0.9.0, each with a test that fails without the fix, and the residual risks are written down. <a href="https://go-llmflow.github.io/docs/main/security/">Read the audit</a>.</p></div>
       <div class="card"><div class="ico">📄</div><h3>Strict configuration</h3><p>Unknown keys are rejected, upstream URLs are limited to http and https without credentials, and secrets are read from files only, never from the command line.</p></div>
     </div>
   </div></section>
