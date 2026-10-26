@@ -24,7 +24,7 @@
   <div class="hero"><div class="wrap">
     <div>
       <h1 class="head">LLM serving for a shared GPU cluster,<br><span class="accent">in pure Go.</span></h1>
-      <p class="sub">go-llmflow is high-performance LLM inference and serving in Go. Its first project, <code>gateway</code>, is an <b>OpenAI-compatible gateway</b> in front of <a href="https://docs.vllm.ai">vLLM</a> for clusters that several institutions own together: each team gets its share, and the share a team leaves idle is lent to the others. <code>CGO_ENABLED=0</code>, BSD-3-Clause.</p>
+      <p class="sub">go-llmflow is high-performance LLM inference and serving in Go. Its first project, <code>gateway</code>, is an <b>OpenAI-compatible gateway</b> in front of <a href="https://docs.vllm.ai">vLLM</a> for clusters that several institutions own together: each team gets its share, and the share a team leaves idle is lent to the others.</p>
       <div class="cta">
         <a class="btn btn-primary" href="https://go-llmflow.github.io/docs/">{{ partial "icons/book.html" . }}Read the documentation →</a>
       </div>
@@ -114,6 +114,6 @@ $ llmflow-gateway serve -c gateway.hcl
     </div>
   </div></section>
 
-  <footer><div class="wrap"><span>© the go-llmflow authors · BSD-3-Clause</span><span>Pure Go · CGO_ENABLED=0</span></div></footer>
+  <footer><div class="wrap"><span>© the go-llmflow authors{{ if not (partial "mantra-on.html" .) }} · BSD-3-Clause{{ end }}</span>{{ if not (partial "mantra-on.html" .) }}<span>Pure Go · CGO_ENABLED=0</span>{{ end }}</div></footer>
 </body>
 </html>
