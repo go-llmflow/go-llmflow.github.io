@@ -55,9 +55,9 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
 [[params.repos]]
   name   = "aws"
   status = "ready"
-  label  = "v0.1.0"
+  label  = "v0.1.1"
   url    = "https://github.com/go-llmflow/aws"
-  blurb  = "AWS Signature Version 4 request signing and AWS event-stream decoding, in pure Go with the standard library only (`CGO_ENABLED=0`). `sigv4` signs an `*http.Request`; `eventstream` decodes the `application/vnd.amazon.eventstream` framing with bounded sizes (16 MiB messages, 128 KiB of headers, 256 headers, 32767-byte values) and rejects a length underflow that the reference decoder allows. All 38 vectors of the aws-c-auth SigV4 suite pass; credentials are redacted in every print. Performance against aws-sdk-go-v2 is not measured yet. The gateway uses it for its Amazon Bedrock provider since v0.23.0, and a `sdk-witness` CI job compares its signatures with aws-sdk-go-v2's on the gateway's Bedrock paths. **Current release v0.1.0:** `go get github.com/go-llmflow/aws@v0.1.0`."
+  blurb  = "AWS Signature Version 4 request signing and AWS event-stream decoding, in pure Go with the standard library only (`CGO_ENABLED=0`). `sigv4` signs an `*http.Request`; `eventstream` decodes the `application/vnd.amazon.eventstream` framing with bounded sizes (16 MiB messages, 128 KiB of headers, 256 headers, 32767-byte values) and rejects a length underflow that the reference decoder allows. All 38 vectors of the aws-c-auth SigV4 suite pass; credentials are redacted in every print. Against aws-sdk-go-v2, indicatively (load ended above 4): decoding 1.1 to 2.9 times faster, encoding 3.7 times faster, signing level (equal within noise) since v0.1.1 caches the signing key, keyed by a SHA-256 of the secret and bounded to 256 entries. The gateway uses it for its Amazon Bedrock provider since v0.23.0, and a `sdk-witness` CI job compares its signatures with aws-sdk-go-v2's on the gateway's Bedrock paths. **Current release v0.1.1:** `go get github.com/go-llmflow/aws@v0.1.1`."
 [[params.repos]]
   name   = "bench"
   status = "ready"
