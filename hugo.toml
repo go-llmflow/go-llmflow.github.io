@@ -53,6 +53,12 @@ disableKinds = ["taxonomy", "term", "RSS", "sitemap", "404"]
   url    = "https://github.com/go-llmflow/pii"
   blurb  = "Finds personal data in text, in pure Go with no dependencies (standard library only): e-mail, phone (E.164 and the French plan), IBAN (ISO 13616, mod 97), French NIR (INSEE key, 2A/2B), payment cards (Luhn and network prefix), IPv4 and IPv6. `pii.New(kinds...)`, `Scanner.Find(text)` returns `[]Match{Kind, Start, End}` and `pii.Mask` replaces them. On a benign corpus: 0 false positives for every kind except 1 phone. Used by the gateway's PII guardrail. v0.1.0 was quadratic on long runs of digits (1 MiB took 11 min 56 s, measured 2026-10-26 on a loaded machine); v0.2.0 fixes it and compares pii with Presidio. **Current release v0.2.0:** `go get github.com/go-llmflow/pii@v0.2.0`."
 [[params.repos]]
+  name   = "aws"
+  status = "ready"
+  label  = "v0.1.0"
+  url    = "https://github.com/go-llmflow/aws"
+  blurb  = "AWS Signature Version 4 request signing and AWS event-stream decoding, in pure Go with the standard library only (`CGO_ENABLED=0`). `sigv4` signs an `*http.Request`; `eventstream` decodes the `application/vnd.amazon.eventstream` framing with bounded sizes (16 MiB messages, 128 KiB of headers, 256 headers, 32767-byte values) and rejects a length underflow that the reference decoder allows. All 38 vectors of the aws-c-auth SigV4 suite pass; credentials are redacted in every print. Performance against aws-sdk-go-v2 is not measured yet. The gateway is planned to use it for Amazon Bedrock (not released). **Current release v0.1.0:** `go get github.com/go-llmflow/aws@v0.1.0`."
+[[params.repos]]
   name   = "bench"
   status = "ready"
   label  = "v0.7.0"
