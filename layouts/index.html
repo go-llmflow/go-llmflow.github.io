@@ -25,9 +25,8 @@
     <div>
       <h1 class="head">LLM serving for a shared GPU cluster,<br><span class="accent">in pure Go.</span></h1>
       <p class="sub">go-llmflow is high-performance LLM inference and serving in Go. Its first project, <code>gateway</code>, is an <b>OpenAI-compatible gateway</b> in front of <a href="https://docs.vllm.ai">vLLM</a> for clusters that several institutions own together: each team gets its share, and the share a team leaves idle is lent to the others.</p>
-      <div class="cta">
-        <a class="btn btn-primary" href="https://go-llmflow.github.io/docs/">{{ partial "icons/book.html" . }}Read the documentation →</a>
-      </div>
+      {{/* [[params.cta]] in hugo.toml: the kit renders the row */}}
+      {{ partial "cta.html" . }}
       {{/* ⛔ Status, said where it is read. gateway v0.33.0 is the current release.
            This line and the tags in hugo.toml change together. */}}
       <div class="trust"><span><b>gateway v0.39.0</b> — current release</span><span><b>fair-share</b> with borrowing, mapped to vLLM priorities</span><span><b>OpenAI</b> API, streaming included</span></div>
@@ -95,7 +94,8 @@ $ llmflow-gateway serve -c gateway.hcl
       <div class="card"><div class="ico">🤝</div><h3>Borrowing</h3><p>Above the reservation the request borrows, at priority <b>10</b> (interactive) or <b>11</b> (batch) and above, the teams that consumed least first (the ranking is Slurm Fair Tree's level fairshare). vLLM admits within-share requests first and preempts borrowers first when KV-cache memory runs out.</p></div>
       <div class="card"><div class="ico">🧪</div><h3>Simulated</h3><p>A deterministic simulator of vLLM's v1 priority scheduler checks the policy: with both teams saturating, the running fraction follows the shares (0.79 and 0.21 against 0.8125 and 0.1875), and a control with every request at priority 0 does not.</p></div>
     </div>
-    <div class="cta"><a class="btn btn-primary" href="https://go-llmflow.github.io/docs/">Read the guide for a co-owned GPU cluster →</a></div>
+    {{/* Not a hero row: no .cta (the kit renders that row, once, from [[params.cta]]). */}}
+    <div style="margin-top:22px"><a class="btn btn-primary" href="https://go-llmflow.github.io/docs/">{{ partial "icons/book.html" . }}Read the guide for a co-owned GPU cluster →</a></div>
   </div></section>
 
   <section id="security"><div class="wrap">
