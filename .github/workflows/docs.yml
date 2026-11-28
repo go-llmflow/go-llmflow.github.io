@@ -25,4 +25,4 @@ permissions:
 
 jobs:
   current:
-    uses: go-fleettools/fleettools/.github/workflows/docs-current.yml@a99a491b3053d6cb94265b65e12846e27acdee2e # main
+    uses: go-fleettools/fleettools/.github/workflows/docs-current.yml@534b6d7ace0e5652177234f13bb86228677a00d8 # main
